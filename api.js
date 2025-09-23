@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Generic HTML wrapper (no hardcoded message)
+// Universal HTML email wrapper
 const wrapHtmlTemplate = (subject, message) => `
   <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin:auto; border:1px solid #eee; border-radius:8px; overflow:hidden;">
     <div style="background:#6d28d9; color:white; padding:16px; text-align:center;">
@@ -19,7 +19,7 @@ const wrapHtmlTemplate = (subject, message) => `
       ${message}
     </div>
     <div style="background:#f9f9f9; padding:12px; text-align:center; font-size:12px; color:#666;">
-      Sent via <strong>Your Portfolio Website</strong>
+      📩 Sent via <strong>Mail API</strong>
     </div>
   </div>
 `;
@@ -34,7 +34,7 @@ app.post("/send-email", async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "gmail", // or custom SMTP
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -42,14 +42,14 @@ app.post("/send-email", async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: `"Portfolio Mailer" <${process.env.EMAIL_USER}>`,
+      from: `"Mailer API" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      text: message.replace(/<[^>]+>/g, ""), // plain text fallback
+      text: message.replace(/<[^>]+>/g, ""), // fallback for plain text
       html: wrapHtmlTemplate(subject, message),
     });
 
-    res.json({ success: true });
+    res.json({ success: true, message: "Email sent successfully!" });
   } catch (err) {
     console.error(err);
     res.json({ success: false, error: err.message });
@@ -57,5 +57,5 @@ app.post("/send-email", async (req, res) => {
 });
 
 app.listen(5000, () =>
-  console.log("✅ API running on http://localhost:5000")
+  console.log("✅ Mail API running on http://localhost:5000")
 );
