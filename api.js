@@ -46,7 +46,7 @@ app.post("/send-email", async (req, res) => {
       to,
       subject,
       text: message.replace(/<[^>]+>/g, ""), // fallback for plain text
-      html: wrapHtmlTemplate(subject, message),
+      html:  message,
     });
 
     res.json({ success: true, message: "Email sent successfully!" });
@@ -59,3 +59,4 @@ app.post("/send-email", async (req, res) => {
 app.listen(5000, () =>
   console.log("✅ Mail API running on http://localhost:5000")
 );
+
