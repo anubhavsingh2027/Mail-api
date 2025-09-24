@@ -9,20 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Universal HTML email wrapper
-const wrapHtmlTemplate = (subject, message) => `
-  <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin:auto; border:1px solid #eee; border-radius:8px; overflow:hidden;">
-    <div style="background:#6d28d9; color:white; padding:16px; text-align:center;">
-      <h2 style="margin:0;">${subject}</h2>
-    </div>
-    <div style="padding:20px;">
-      ${message}
-    </div>
-    <div style="background:#f9f9f9; padding:12px; text-align:center; font-size:12px; color:#666;">
-      📩 Sent via <strong>Mail API</strong>
-    </div>
-  </div>
-`;
+
 
 // API endpoint
 app.post("/send-email", async (req, res) => {
@@ -34,7 +21,7 @@ app.post("/send-email", async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail", // or custom SMTP
+      service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -42,10 +29,10 @@ app.post("/send-email", async (req, res) => {
     });
 
     await transporter.sendMail({
-      from: `"Mailer API" <${process.env.EMAIL_USER}>`,
+      from: `"Anubhav API" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      text: message.replace(/<[^>]+>/g, ""), // fallback for plain text
+      text: message.replace(/<[^>]+>/g, ""),
       html:  message,
     });
 
@@ -59,4 +46,3 @@ app.post("/send-email", async (req, res) => {
 app.listen(5000, () =>
   console.log("✅ Mail API running on http://localhost:5000")
 );
-
