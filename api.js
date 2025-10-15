@@ -21,7 +21,7 @@ app.post('/sendMail', async (req, res) => {
   try {
     const { to, websiteName, subject, message } = req.body;
     if (!to || !websiteName || !subject || !message) {
-      return res.status(400).json({ success: false, error: 'Missing required fields' });
+      return res.status(400).json({ success: false, error: 'Missing required fields',message:req.body });
     }
     const response = await resend.emails.send({
       from: `${websiteName} <support@anubhavmail.anubhavsingh.website>`,
