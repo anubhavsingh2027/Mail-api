@@ -9,9 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // CORS for all origins
-app.use(cors());
-app.options('*', cors()); // preflight
-app.use(express.json());
+app.use(cors({
+  origin: ["https://kashika-frontend.vercel.app/"],
+}));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
