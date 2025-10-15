@@ -19,13 +19,13 @@ app.get('/', (req, res) => res.send('Server is running!'));
 
 app.post('/sendMail', async (req, res) => {
   try {
-    const { mailTo, webSiteName, subject, message } = req.body;
-    if (!mailTo || !webSiteName || !subject || !message) {
+    const { to, websiteName, subject, message } = req.body;
+    if (!to || !websiteName || !subject || !message) {
       return res.status(400).json({ success: false, error: 'Missing required fields' });
     }
     const response = await resend.emails.send({
-      from: `${webSiteName} <support@anubhavmail.anubhavsingh.website>`,
-      to: mailTo,
+      from: `${websiteName} <support@anubhavmail.anubhavsingh.website>`,
+      to: to,
       subject,
       html: message,
     });
