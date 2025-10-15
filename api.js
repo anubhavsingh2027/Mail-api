@@ -14,7 +14,8 @@ app.use(cors({
 }));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.get('/', (req, res) => res.send('Server is running!'));
 
 app.post('/sendMail', async (req, res) => {
