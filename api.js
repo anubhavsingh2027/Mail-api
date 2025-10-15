@@ -32,7 +32,7 @@ app.post('/sendMail', async (req, res) => {
     return res.json({ success: !!response.data.id });
   } catch (error) {
     console.error('Error sending email:', error.message);
-    return res.status(500).json({ success: false, error: error.message });
+    return res.status(500).json({ success: false, error: error.message,message:req.body });
   }
 });
 
