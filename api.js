@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS for all origins
 app.use(cors({
-  origin: ["https://kashika-travel.anubhavsingh.website","https://portfolio.anubhavsingh.website","https://phishshield.anubhavsingh.website/"],
+  origin: ["https://kashika-travel.anubhavsingh.website","https://portfolio.anubhavsingh.website","https://phishshield.anubhavsingh.website"],
 }));
 
 const resend = new Resend(process.env.RESEND_API_KEY);
