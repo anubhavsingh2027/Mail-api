@@ -8,33 +8,53 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS for all origins
-app.use(cors({
-  origin: ["https://kashika-travel.anubhavsingh.website","https://portfolio.anubhavsingh.website","https://phishshield.anubhavsingh.website"],
-}));
+// ✅ Allow all origins (anyone can access)
+app.use(cors());
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-app.use(express.urlencoded({ extended: true }));
+// ✅ Parse JSON and URL-encoded data
 app.use(express.json());
-app.get('/', (req, res) => res.send('Server is running!'));
+app.use(express.urlencoded({ extended: true }));
 
+// ✅ Initialize Resend client
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// ✅ Health check route
+app.get('/', (req, res) => res.send('🚀 Server is running and ready to send emails!'));
+
+// ✅ Email sending route
 app.post('/sendMail', async (req, res) => {
   try {
     const { to, websiteName, subject, message } = req.body;
+
     if (!to || !websiteName || !subject || !message) {
-      return res.status(400).json({ success: false, error: 'Missing required fields',message:req.body });
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        received: req.body,
+      });
     }
+
     const response = await resend.emails.send({
-      from: `${websiteName} <support@anubhavmail.anubhavsingh.website>`,
-      to: to,
+      from: `${websiteName} <noreply@mail.anubhav.sbs>`,
+      to,
       subject,
       html: message,
     });
-    return res.json({ success: !!response.data.id });
+
+    return res.json({
+      success: true,
+      id: response?.data?.id || null,
+      message: 'Email sent successfully!',
+    });
+
   } catch (error) {
-    console.error('Error sending email:', error.message);
-    return res.status(500).json({ success: false, error: error.message,message:req.body });
+    console.error('❌ Error sending email:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 });
 
+// ✅ Start server
 app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
