@@ -35,7 +35,7 @@ app.post('/sendMail', async (req, res) => {
     }
 
     const response = await resend.emails.send({
-      from: `${websiteName} <noreply@mailer.anubhav.sbs>`, // ✅ fixed template string
+      from: `${websiteName} <noreply@anubhav-mail.nav-code.com>`, // ✅ fixed template string
       to,
       subject,
       html: message,
