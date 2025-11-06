@@ -1,0 +1,22 @@
+# fly.toml app configuration file generated for mail-api-old-dew-3948 on 2025-11-06T14:50:55+05:30
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'mail-api-old-dew-3948'
+primary_region = 'bom'
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
